@@ -61,9 +61,6 @@ function today() {
     return day;
 }
 
-let currrentTime = document.querySelector("#time");
-
-currrentTime.innerHTML = today();
 
 function searchForCity(event) {
     event.preventDefault();
@@ -99,6 +96,10 @@ function setCelsius(response) {
 
     console.log(icons[calldayandnight])
     console.log(response.data.weather[0].description)
+
+    let currrentTime = document.querySelector("#time");
+    currrentTime.innerHTML = today(response.data.dt * 1000);
+
 }
 
 let searchButton = document.querySelector("button");
