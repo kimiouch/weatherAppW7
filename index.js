@@ -2,38 +2,42 @@ let apiKey = "c403a9e2a5c07086f36f15c109e2369a";
 let apiUrl = "https://api.openweathermap.org/data/2.5/weather?";
 
 let icons = {
-    "day": {
-        "clear sky": "./icons/day/clearday.png",
-        "few clouds": "./icons/day/fewclouds.png",
-        "scattered clouds": "./icons/cloud.png",
-        "broken clouds": "./icons/manyclouds.png",
-        "shower rain":"./icons/showerrain.png",
-        "rain": "./icons/day/rainyday.png",
-        "thunderstorm":"./icons/thunder.png",
-        "snow": "./icons/snowy.png",
-        "mist": "./icons/day/mistday.png",
-    },
-    "night": {
-        "clear sky":"./icons/clearnight.png",
-        "few clouds": "./icons/night/fewclouds.png",
-        "scattered clouds": "./icons/cloud.png",
-        "broken clouds": "./icons/manyclouds.png",
-        "shower rain": "./icons/showerrain.png",
-        "rain": "./icons/night/rainynight.png",
-        "thunderstorm": "./icons/thunder.png",
-        "snow": "./icons/snowy.png",
-        "mist": "./icons/night/mistnight.png",
-    }, 
-}
-function dayOrNight(time,sunrise,sunset){
-if (time >  sunrise && time < sunset){
-    return "day";
-} else{
-    return "night";
+
+    "01d": "./icons/day/clearday.png",
+    "02d": "./icons/day/fewclouds.png",
+    "03d": "./icons/cloud.png",
+    "04d": "./icons/manyclouds.png",
+    "09d":"./icons/showerrain.png",
+    "10d": "./icons/day/rainyday.png",
+    "11d":"./icons/thunder.png",
+    "13d": "./icons/snowy.png",
+    "50d": "./icons/day/mistday.png",
+
+    
+    "01n":"./icons/clearnight.png",
+    "02n": "./icons/night/fewclouds.png",
+    "03n": "./icons/cloud.png",
+    "04n": "./icons/manyclouds.png",
+    "09n": "./icons/showerrain.png",
+    "10n": "./icons/night/rainynight.png",
+    "11n": "./icons/thunder.png",
+    "13n": "./icons/snowy.png",
+    "50n": "./icons/night/mistnight.png",
+   
 }
 
-}
-function today() {
+
+// function dayOrNight(time,sunrise,sunset){
+//     console.log(new Date(time), new Date(sunset), new Date(sunrise))
+// if (time >  sunrise && time < sunset){
+//     return "day";
+// } else{
+//     return "night";
+// }
+//}
+
+
+function today(timestamp) {
     let weekdays = [
         "Sunday",
         "Monday",
@@ -44,10 +48,10 @@ function today() {
         "Saturday"
     ];
 
-    let now = new Date();
+    let now = new Date(timestamp);
 
-    let hour = now.getHours();
-    let minute = now.getMinutes();
+    let hour = now.getUTCHours();
+    let minute = now.getUTCMinutes();
 
     if (hour < 10) {
         hour = "0" + hour;
@@ -56,7 +60,7 @@ function today() {
         minute = "0" + minute;
     }
 
-    let day = `${weekdays[now.getDay()]}, ${hour}:${minute}`;
+    let day = `${weekdays[now.getUTCDay()]}, ${hour}:${minute}`;
 
     return day;
 }
@@ -91,14 +95,12 @@ function setCelsius(response) {
     Wind.innerHTML = response.data.wind.speed;
 
     let iconelement = document.querySelector("#icon");
-    let calldayandnight = dayOrNight(response.data.dt, response.data.sunrise, response.data.sunset);
-    iconelement.setAttribute("src", icons[calldayandnight][response.data.weather[0].description] );
+   // let calldayandnight = dayOrNight(response.data.dt, response.data.sunrise, response.data.sunset);
+    iconelement.setAttribute("src", icons[response.data.weather[0].icon]);
 
-    console.log(icons[calldayandnight])
-    console.log(response.data.weather[0].description)
-
+    
     let currrentTime = document.querySelector("#time");
-    currrentTime.innerHTML = today(response.data.dt * 1000);
+    currrentTime.innerHTML = today( (response.data.dt + response.data.timezone) * 1000);
 
 }
 
