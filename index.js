@@ -92,7 +92,7 @@ function setCelsius(response) {
     Humidity.innerHTML = response.data.main.humidity;
 
     let Wind = document.querySelector("#wind");
-    Wind.innerHTML = response.data.wind.speed;
+    Wind.innerHTML = Math.round(response.data.wind.speed);
 
     let iconelement = document.querySelector("#icon");
    // let calldayandnight = dayOrNight(response.data.dt, response.data.sunrise, response.data.sunset);
